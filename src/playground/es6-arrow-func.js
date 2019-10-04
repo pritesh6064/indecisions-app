@@ -19,6 +19,18 @@ console.log(sq(9));
 
 */
 
+
+/*
+const multiplier ={
+  numbers : [1,6],
+  mBy : 2,
+  mutliply(){
+    return this.numbers.map((n) => this.mBy*n);
+  }
+};
+console.log(multiplier.mutliply());
+*/
+
 const sName = (x) => x.split(' ')[0];
 
 console.log(sName('Ando Mindo'));

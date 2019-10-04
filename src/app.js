@@ -3,41 +3,55 @@ console.log("app.js is running");
 //JSX - JavaScript XML
 
 const app = {
-  title : 'indeicisions app',
+  title : 'Indecisions app',
   subtitle : 'Put your life in computers hand',
-  options: ['One','Two' ]
+  options: []
 };
 
-const template1 = (
+const onFormSubmit = (e) =>{
+  e.preventDefault();     //prevents whole page from refreshing
+
+  const option = e.target.elements.option.value;
+  if(option){
+    app.options.push(option);
+    e.target.elements.option.value = "";
+    renderAgain();
+  }
+};
+
+const removeAll = () => {
+  app.options = [];
+  renderAgain();
+};
+
+const onMakeDecision = () => {
+  const rNo = Math.floor(Math.random()*app.options.length);
+  const option = app.options[rNo];
+  alert(option);
+};
+
+const appRoot = document.getElementById("app");
+
+const renderAgain = () => {
+  const template1 = (
     <div>
         <h1>{app.title}</h1>
         {app.subtitle && <p>{app.subtitle}</p>}
-        {(app.options && app.options.length) ? 'here' : 'No Options'}
+        {(app.options && app.options.length) ? 'Here are your options' : 'No Options'}        
+        <p><button disabled={app.options.length == 0} onClick={onMakeDecision}>What Should I Do?</button>      
+        <button onClick={removeAll}>Remove All</button></p>        
         <ol>
-            <li>Item 1</li>
-            <li>Item 2</li>
+            {
+              app.options.map( (option) => <li key={option}>{option}</li>)
+            }
         </ol>
+        <form onSubmit={onFormSubmit}>
+          <input type="text" name="option"/>
+          <button>Add Option</button>
+        </form>
     </div>
 );
-
-const user ={
-  userName : "Patrice",
-  Age : 26,
-  userLocation : "Texas"
-};
-
-function getLocation(location){
-  if(location)
-    return <p>Location : {location}</p>;
+ReactDOM.render(template1,appRoot);
 }
 
-const template2 = (
-  <div>
-    <h1>{user.userName ? user.userName : 'Anonymous'}</h1>
-    {(user.Age && user.Age >= 18) && <p>Age: {user.Age}</p> }   
-    {getLocation(user.userLocation)}
-  </div>
-);
-const appRoot = document.getElementById("app");
-
-ReactDOM.render(template1, appRoot);
+renderAgain();
